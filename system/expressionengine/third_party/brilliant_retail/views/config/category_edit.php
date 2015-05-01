@@ -177,9 +177,9 @@
 			<th>
 				<?=lang('br_category_products')?></th>
 			<th width="5%"> 
+				<?=lang('remove')?></th>
+			<th width="5%"> 
 				<?=lang('br_sort')?></th>
-			<th width="5%" colspan="2"> 
-				<?=lang('br_actions')?></th>
 		</tr>
 	</thead>
 	<tbody id="selection">
@@ -191,10 +191,12 @@
         	<td style="vertical-align:middle;">
         		<?= $items['title'] ?>
         	</td>
-        	<td>
-        		<input id="items_<?= $items['id']?>" class="input_numeric" value="<?= $items['sort_order']?>" type="text" /></td>
 	    	<td>
 	    		<a href="#" class="delete_product"><img src="<?=$theme?>images/delete.png"></a></td>
+            <td class="move_image_row">
+        		<input type="hidden" id="items_<?= $items['id']?>" class="input_numeric" value="<?= $items['sort_order']?>" type="text" />
+               <img src="<?=$theme?>images/move.png"></a>
+            </td>
 	    </tr>
 	<?php 
 		} 
@@ -258,6 +260,23 @@ $(function() {
 			return false;
 		}
 	});
+	
+	$('#product_sort_tbl tbody').sortable({axis:'y', cursor:'move', opacity:0.6, handle:'.move_image_row',
+						helper:function(e, ui) {
+							ui.children().each(function() {
+								$(this).width($(this).width());
+							});		
+							return ui;
+						},
+						update: function(){
+							var i = 0;
+							$('#product_sort_tbl input').each(function(){
+								$(this).val(i);
+								i++;
+							});	
+						}
+					});
+
 
 });
 
